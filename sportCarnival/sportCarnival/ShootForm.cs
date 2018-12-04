@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace sportCarnival
 {
-    public partial class Form1 : Form
+    public partial class ShootForm : Form
     {
-        public Form1()
+        public ShootForm()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ShootForm_Load(object sender, EventArgs e)
         {
 
         }
