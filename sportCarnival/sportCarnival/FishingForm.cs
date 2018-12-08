@@ -12,14 +12,20 @@ namespace sportCarnival
 {
     public partial class FishingForm : Form
     {
+        //public PictureBox mole;
+        //public PictureBox backImg;
         public FishingForm()
         {
             InitializeComponent();
+        
+            
         }
 
         private void FishingForm_Load(object sender, EventArgs e)
         {
 
+            
+            
         }
     }
 }
