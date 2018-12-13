@@ -203,7 +203,9 @@ namespace sportCarnival
             // check whether finish current Question
             if (complete())
             {
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 // ~~~~~~~later to do~~~~~~~~~~~~~ 
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 MessageBox.Show("FD");
             }
 
