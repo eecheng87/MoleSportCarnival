@@ -17,6 +17,9 @@ namespace sportCarnival
         public bool direction;// 1 means going down 0 means going up
         public List<Fish> fishList;
         public int currentFishNum;
+        public int geneCounter;
+        public PictureBox attachFish;
+        public bool Catch;
         public FishingForm()
         {
             InitializeComponent();
@@ -37,7 +40,17 @@ namespace sportCarnival
             lineStart = 130;
             lineEnd = 155;
             currentFishNum = 0;
+            geneCounter = 200;
             fishList = new List<Fish>();
+
+            Catch = false;
+            attachFish = new PictureBox();
+            attachFish.Image = new Bitmap(@"../../../Resource/fish_up.png");
+            attachFish.SizeMode = PictureBoxSizeMode.Zoom;
+            attachFish.Size = new Size(70, 70);
+            attachFish.Visible = false;
+            attachFish.BackColor = Color.Transparent;
+            Controls.Add(attachFish);
 
 
 
@@ -52,25 +65,57 @@ namespace sportCarnival
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (lineEnd > 460)
+            {
                 direction = false;
-
+            }
+            // update attach fish's position
+            if (Catch)
+            {
+                attachFish.Visible = true;
+                attachFish.Location = new Point(390,lineEnd-6);
+                
+            }
             // if current fish number less than threshold, then generate fish
             if (currentFishNum < 3)
             {
-                geneFish();
+                geneCounter++;
+                if (geneCounter > 250)
+                {
+                    geneFish();
+                    geneCounter = 0;
+                }
             }
             // update each fish next position
             if(currentFishNum>0)
-                foreach(Fish tmp in fishList)
+                for(int i=0; i<fishList.Count;i++)
                 {
-                    if ((string)tmp.img.Image.Tag == "right")
+
+                    if ((string)fishList[i].img.Image.Tag == "right")
                     {
                         // current direction is forward to right
-                        tmp.img.Left += 1;
+                        fishList[i].img.Left += 1;
+                        // when fish was caught
+                        if (fishList[i].img.Left < 423 && fishList[i].img.Right > 423 && Math.Abs(fishList[i].img.Top - lineEnd) < 2) 
+                        {
+                            Controls.Remove(fishList[i].img);
+                            fishList[i].img.Dispose();
+                            fishList.Remove(fishList[i]);
+                            currentFishNum--;
+                            Catch = true;
+                        }
                     }else
                     {
                         // current direction is forward to left
-                        tmp.img.Left -= 1;
+                        fishList[i].img.Left -= 1;
+                        // when fish was caught
+                        if (fishList[i].img.Left<423 && fishList[i].img.Right > 423 && Math.Abs(fishList[i].img.Top - lineEnd) < 2)
+                        {
+                            Controls.Remove(fishList[i].img);
+                            fishList[i].img.Dispose();
+                            fishList.Remove(fishList[i]);
+                            currentFishNum--;
+                            Catch = true;
+                        }
                     }
                 }
 
@@ -78,16 +123,25 @@ namespace sportCarnival
         private void TimerCallback(object sender, EventArgs e)
         {
             if (lineEnd <= lineStart && direction == false)
+            {
+                Catch = false;
+                attachFish.Visible = false;
                 return;
+            }
+       
             // function for update how to paint (process new coordinate for line)
             if (direction)
             {
-                lineEnd += 1;
+                lineEnd += 3;
             }
             else
             {
-                lineEnd -= 1;
+                lineEnd -= 3;
             }
+            // if line is going to down but catch fish -> change direction
+            if (direction && Catch)
+                direction = false;
+
             this.Invalidate();
             return;
         }
@@ -131,25 +185,7 @@ namespace sportCarnival
             }
             fish.img.BackColor = Color.Transparent;
             Controls.Add(fish.img);
-            //fishList.Add(fish);
-            
-            /*Fish fish = new Fish();
-           
-            if (direction == 0)
-            {// direction is left
-                fish.direction = "left";
-                fish.imgPath = "@\"../../../ Resource / fish_left.png\"";
-                fish.left = 900;
-                fish.top = myrand.Next(250, 450);
-            }
-            else
-            {
-                fish.direction = "right";
-                fish.imgPath = "@\"../../../ Resource / fish_right.png\"";
-                fish.left = -70;
-                fish.top = myrand.Next(250, 450);
-            }*/
-
+         
             fishList.Add(fish);
             currentFishNum++;
         }
