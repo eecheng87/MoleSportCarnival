@@ -13,5 +13,7 @@ namespace sportCarnival
         public int top;
         public string direction;
         public PictureBox img;
+        public Label label;
+        public int num; // store label's number
     }
 }

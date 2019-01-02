@@ -18,8 +18,22 @@ namespace sportCarnival
         public List<Fish> fishList;
         public int currentFishNum;
         public int geneCounter;
+        public int bucketCounter;
         public PictureBox attachFish;
+        public PictureBox WormImg;
+        public PictureBox bucketImg;
+
+        public bool bucketState; // if value is true: exist
         public bool Catch;
+        public bool Worm; // if value is true: have worm
+
+        // variable for question and current state( success or fail )
+        public int expression; // 0 means >, 1 means <
+        public bool newQuestion; // true means generate new question
+        public int leftOperator;
+        public int rightOperator;
+        public Label question;
+        public Label result;
         public FishingForm()
         {
             InitializeComponent();
@@ -41,7 +55,10 @@ namespace sportCarnival
             lineEnd = 155;
             currentFishNum = 0;
             geneCounter = 200;
+            bucketCounter = 0;
+            bucketState = false;
             fishList = new List<Fish>();
+            Worm = true;
 
             Catch = false;
             attachFish = new PictureBox();
@@ -51,6 +68,36 @@ namespace sportCarnival
             attachFish.Visible = false;
             attachFish.BackColor = Color.Transparent;
             Controls.Add(attachFish);
+
+            WormImg = new PictureBox();
+            WormImg.Image = new Bitmap(@"../../../Resource/worm.png");
+            WormImg.SizeMode = PictureBoxSizeMode.Zoom;
+            WormImg.Size = new Size(40, 40);
+            WormImg.BackColor = Color.Transparent;
+            Controls.Add(WormImg);
+
+            bucketImg = new PictureBox();
+            bucketImg.Image = new Bitmap(@"../../../Resource/bucket.png");
+            bucketImg.SizeMode = PictureBoxSizeMode.Zoom;
+            bucketImg.Size = new Size(90, 90);
+            bucketImg.Location = new Point(-100, 320);
+            bucketImg.BackColor = Color.Transparent;
+            Controls.Add(bucketImg);
+
+            // initial Question variable
+            question = new Label();
+            question.Text = "題目: ";
+            question.Location = new Point(250, 40);
+            question.TextAlign = ContentAlignment.MiddleCenter;
+            Controls.Add(question);
+
+            result = new Label();
+            result.Text = "產生中...";
+            result.Location = new Point(550, 40);
+            result.TextAlign = ContentAlignment.MiddleCenter;
+            Controls.Add(result);
+
+            newQuestion = true;
 
 
 
@@ -64,6 +111,31 @@ namespace sportCarnival
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            // generate new quetion
+            if (newQuestion)
+            {
+                geneQuestion();
+            }
+            // for generate bucket counter
+            bucketCounter++;
+            if (bucketCounter>200&&!bucketState) // time interval 10
+            {
+                bucketCounter = 0;
+                bucketImg.Left = -50;
+                bucketState = true;
+            }
+
+            // update bucket position
+            if (bucketState)
+            {
+                bucketImg.Left += 2;
+                if (bucketImg.Left > 1000)
+                {
+                    bucketState = false;
+                   // bucketImg.Dispose();
+                }
+            }
+
             if (lineEnd > 460)
             {
                 direction = false;
@@ -75,6 +147,15 @@ namespace sportCarnival
                 attachFish.Location = new Point(390,lineEnd-6);
                 
             }
+            // update attch worm's position
+            if (Worm)
+            {
+                WormImg.Visible = true;
+                WormImg.Location = new Point(405, lineEnd - 5);
+            }else
+            {
+                WormImg.Visible = false;
+            }
             // if current fish number less than threshold, then generate fish
             if (currentFishNum < 3)
             {
@@ -85,36 +166,116 @@ namespace sportCarnival
                     geneCounter = 0;
                 }
             }
+
             // update each fish next position
-            if(currentFishNum>0)
+            if (currentFishNum > 0)
                 for(int i=0; i<fishList.Count;i++)
                 {
+                    if (fishList[i].img.Left < -70 || fishList[i].img.Left > 900)
+                    {
+                        currentFishNum--;
+                        Controls.Remove(fishList[i].img);
+                        fishList[i].img.Dispose();
+                        fishList.Remove(fishList[i]);
+                    }
 
                     if ((string)fishList[i].img.Image.Tag == "right")
                     {
                         // current direction is forward to right
                         fishList[i].img.Left += 1;
+                        fishList[i].label.Left += 1;
                         // when fish was caught
                         if (fishList[i].img.Left < 423 && fishList[i].img.Right > 423 && Math.Abs(fishList[i].img.Top - lineEnd) < 2) 
                         {
+                            // check answer whether correct
+                            if (expression == 0)
+                            {
+                                // 0 means >
+                                if(fishList[i].num > rightOperator)
+                                {
+                                    //correct
+                                    newQuestion = true;
+                                    result.Text = "答對囉~ ~";
+                                }else
+                                {
+                                    newQuestion = true;
+                                    result.Text = "答錯囉~ ~";
+                                }
+                            }
+                            else
+                            {
+                                // 1 means <
+                                if (fishList[i].num < rightOperator)
+                                {
+                                    //correct
+                                    newQuestion = true;
+                                    result.Text = "答對囉~ ~";
+                                }
+                                else
+                                {
+                                    newQuestion = true;
+                                    result.Text = "答錯囉~ ~";
+                                }
+                            }
+                            // remove fish's label
+                            Controls.Remove(fishList[i].label);
+                            // remove fish
                             Controls.Remove(fishList[i].img);
                             fishList[i].img.Dispose();
                             fishList.Remove(fishList[i]);
                             currentFishNum--;
                             Catch = true;
+                            Worm = false;
                         }
                     }else
                     {
                         // current direction is forward to left
                         fishList[i].img.Left -= 1;
+                        fishList[i].label.Left -= 1;
                         // when fish was caught
                         if (fishList[i].img.Left<423 && fishList[i].img.Right > 423 && Math.Abs(fishList[i].img.Top - lineEnd) < 2)
                         {
+                            // check answer whether correct
+                            if (expression == 0)
+                            {
+                                // 0 means >
+                                if (fishList[i].num > rightOperator)
+                                {
+                                    //correct
+                                    newQuestion = true;
+                                    result.Text = "答對囉~ ~";
+                                }
+                                else
+                                {
+                                    newQuestion = true;
+                                    result.Text = "答錯囉~ ~";
+                                }
+                            }
+                            else
+                            {
+                                // 1 means <
+                                if (fishList[i].num < rightOperator)
+                                {
+                                    //correct
+                                    newQuestion = true;
+                                    result.Text = "答對囉~ ~";
+                                }
+                                else
+                                {
+                                    newQuestion = true;
+                                    result.Text = "答錯囉~ ~";
+                                }
+                            }
+
+                            // remove fish's label
+                            Controls.Remove(fishList[i].label);
+                            // remove fish
                             Controls.Remove(fishList[i].img);
                             fishList[i].img.Dispose();
                             fishList.Remove(fishList[i]);
                             currentFishNum--;
                             Catch = true;
+                            Worm = false;
                         }
                     }
                 }
@@ -124,9 +285,15 @@ namespace sportCarnival
         {
             if (lineEnd <= lineStart && direction == false)
             {
+                Worm = true;
                 Catch = false;
                 attachFish.Visible = false;
+                WormImg.Visible = true;
                 return;
+                /*****************
+                 *   
+                 * 
+                 ****************/ 
             }
        
             // function for update how to paint (process new coordinate for line)
@@ -164,6 +331,23 @@ namespace sportCarnival
             }
         }
 
+        private void geneQuestion()
+        {
+            Random myrand = new Random();
+            int exp = myrand.Next(0, 2); // 0 means >
+            int right = myrand.Next(3, 10);
+            expression = exp;
+            rightOperator = right;
+            string str;
+            if (exp == 0)
+                str = ">";
+            else
+                str = "<";
+
+            question.Text = "題目: " + "  " + str + rightOperator.ToString();
+
+            newQuestion = false;
+        }
         private void geneFish()
         {
             Random myrand = new Random();
@@ -172,14 +356,41 @@ namespace sportCarnival
             fish.img = new PictureBox();
             fish.img.SizeMode = PictureBoxSizeMode.Zoom;
             fish.img.Size = new Size(70, 70);
+            
+            // set fish's top 
+            fish.top = myrand.Next(250, 450);
+
+            fish.label = new Label();
+            fish.num = myrand.Next(1, 6);
+            fish.label.Text = fish.num.ToString();
+            
+            fish.label.Width = 15;
+            fish.label.Height = 15;
+            //fish.label.TextAlign = ContentAlignment.MiddleCenter;
+            fish.label.Font = new Font("Arial", 10);
+            Controls.Add(fish.label);
+           /* tmp.TextAlign = ContentAlignment.MiddleCenter;
+            tmp.Font = new Font("Arial", 18);
+            tmp.Width = 45;
+            tmp.Height = 45;
+            tmp.Left = myrand.Next(800, 900);
+            tmp.Top = myrand.Next(250, 460);
+            tmp.BackColor = Color.FromArgb(1, 202, 207, 210);
+            tmp.BringToFront();*/
+
+
             if (direction==0)
             {// direction is left
-                fish.img.Location = new Point(900,myrand.Next(250, 450));
+                fish.left = 900;
+                fish.label.Location = new Point(fish.left+20, fish.top);
+                fish.img.Location = new Point(900,fish.top);
                 fish.img.Image = new Bitmap(@"../../../Resource/fish_left.png");
                 fish.img.Image.Tag = "left";
             }else
             {
-                fish.img.Location = new Point(-70, myrand.Next(250, 450));
+                fish.left = -70;
+                fish.label.Location = new Point(fish.left+20, fish.top);
+                fish.img.Location = new Point(-70, fish.top);
                 fish.img.Image = new Bitmap(@"../../../Resource/fish_right.png");
                 fish.img.Image.Tag = "right";
             }
