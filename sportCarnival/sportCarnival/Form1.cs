@@ -26,16 +26,18 @@ namespace sportCarnival
         {
             //test, later delete
             //FormSki.Show();
-            FormFish.Show();
+            //FormFish.Show();
         }
 
         private void ski_btn_Click(object sender, EventArgs e)
         {
+            FormSki = new SkiingForm();
             FormSki.Show();
         }
 
         private void fishing_btn_Click(object sender, EventArgs e)
         {
+            FormFish = new FishingForm();
             FormFish.Show();
         }
 

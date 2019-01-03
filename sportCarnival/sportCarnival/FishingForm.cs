@@ -34,6 +34,11 @@ namespace sportCarnival
         public int rightOperator;
         public Label question;
         public Label result;
+
+        // score
+        public int score;
+        // worm number
+        public int wormNum;
         public FishingForm()
         {
             InitializeComponent();
@@ -99,8 +104,10 @@ namespace sportCarnival
 
             newQuestion = true;
 
-
-
+            score = 0;
+            wormNum = 3;
+            instruct.Visible = false;
+            this.KeyPreview = true;
             timer1.Tick += new EventHandler(TimerCallback);
             // make graph more meticulous         
             this.DoubleBuffered = true;
@@ -111,6 +118,10 @@ namespace sportCarnival
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            // update score board
+            point.Text = "分數: " + score.ToString();
+            life.Text = "魚餌剩餘: " + wormNum.ToString();
+
             // generate new quetion
             if (newQuestion)
             {
@@ -133,6 +144,25 @@ namespace sportCarnival
                 {
                     bucketState = false;
                    // bucketImg.Dispose();
+                }
+            }
+
+            // check worm whether collide bucket
+            if( bucketImg.Left-423 < 90 && bucketImg.Left - 423 > -40 && bucketImg.Top-lineEnd<70 && Worm == true)
+            {
+                wormNum--;
+                Worm = false;
+            }
+
+            // game over
+            if(wormNum == 0)
+            {
+                timer1.Stop();
+                DialogResult tmp = MessageBox.Show("遊戲結束, 獲得 " + score.ToString() + " 分");
+                
+                if (tmp == DialogResult.OK)
+                {
+                    this.Close();
                 }
             }
 
@@ -196,6 +226,7 @@ namespace sportCarnival
                                     //correct
                                     newQuestion = true;
                                     result.Text = "答對囉~ ~";
+                                    score++;
                                 }else
                                 {
                                     newQuestion = true;
@@ -210,6 +241,7 @@ namespace sportCarnival
                                     //correct
                                     newQuestion = true;
                                     result.Text = "答對囉~ ~";
+                                    score++;
                                 }
                                 else
                                 {
@@ -244,6 +276,7 @@ namespace sportCarnival
                                     //correct
                                     newQuestion = true;
                                     result.Text = "答對囉~ ~";
+                                    score++;
                                 }
                                 else
                                 {
@@ -259,6 +292,7 @@ namespace sportCarnival
                                     //correct
                                     newQuestion = true;
                                     result.Text = "答對囉~ ~";
+                                    score++;
                                 }
                                 else
                                 {
@@ -335,7 +369,7 @@ namespace sportCarnival
         {
             Random myrand = new Random();
             int exp = myrand.Next(0, 2); // 0 means >
-            int right = myrand.Next(3, 10);
+            int right = myrand.Next(3, 8);
             expression = exp;
             rightOperator = right;
             string str;
@@ -361,7 +395,7 @@ namespace sportCarnival
             fish.top = myrand.Next(250, 450);
 
             fish.label = new Label();
-            fish.num = myrand.Next(1, 6);
+            fish.num = myrand.Next(1, 10);
             fish.label.Text = fish.num.ToString();
             
             fish.label.Width = 15;
@@ -369,16 +403,7 @@ namespace sportCarnival
             //fish.label.TextAlign = ContentAlignment.MiddleCenter;
             fish.label.Font = new Font("Arial", 10);
             Controls.Add(fish.label);
-           /* tmp.TextAlign = ContentAlignment.MiddleCenter;
-            tmp.Font = new Font("Arial", 18);
-            tmp.Width = 45;
-            tmp.Height = 45;
-            tmp.Left = myrand.Next(800, 900);
-            tmp.Top = myrand.Next(250, 460);
-            tmp.BackColor = Color.FromArgb(1, 202, 207, 210);
-            tmp.BringToFront();*/
-
-
+         
             if (direction==0)
             {// direction is left
                 fish.left = 900;
@@ -399,6 +424,21 @@ namespace sportCarnival
          
             fishList.Add(fish);
             currentFishNum++;
+        }
+
+        private void quit_btn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void instruction_Click(object sender, EventArgs e)
+        {
+            instruct.Visible = true;
+        }
+
+        private void instruct_Click(object sender, EventArgs e)
+        {
+            instruct.Visible = false;
         }
     }
 }
