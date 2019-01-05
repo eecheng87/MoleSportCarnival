@@ -26,7 +26,10 @@ namespace sportCarnival
         {
             //test, later delete
             //FormSki.Show();
+/*<<<<<<< HEAD
+=======
             //FormFish.Show();
+>>>>>>> 638409f15e3bfc7aace5809dd5dfd5cedc5d00c7*/
         }
 
         private void ski_btn_Click(object sender, EventArgs e)
