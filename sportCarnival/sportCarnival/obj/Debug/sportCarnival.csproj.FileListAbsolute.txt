@@ -1,1 +1,8 @@
 D:\MoleSportCarnival\sportCarnival\sportCarnival\bin\Debug\sportCarnival.exe.config
+D:\MoleSportCarnival\sportCarnival\sportCarnival\bin\Debug\sportCarnival.exe
+D:\MoleSportCarnival\sportCarnival\sportCarnival\bin\Debug\sportCarnival.pdb
+D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.csprojResolveAssemblyReference.cache
+D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.Properties.Resources.resources
+D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.csproj.GenerateResource.Cache
+D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.exe
+D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.pdb
