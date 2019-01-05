@@ -8,7 +8,6 @@ D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.Propert
 D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.FishingForm.resources
 D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.Form1.resources
 D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.HockeyForm.resources
-D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.Properties.Resources.resources
 D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.ShootForm.resources
 D:\MoleSportCarnival\sportCarnival\sportCarnival\obj\Debug\sportCarnival.SkiingForm.resources
 >>>>>>> 7804203aafaff8321dc49dbd2f9c696544e78cee
