@@ -95,6 +95,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ShootForm.resx">
       <DependentUpon>ShootForm.cs</DependentUpon>
@@ -114,6 +115,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1383240802-567454191.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bulletcount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\501022-PI9VO6-922.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\target.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mole.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

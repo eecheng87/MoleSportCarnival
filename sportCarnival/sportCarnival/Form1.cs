@@ -25,7 +25,7 @@ namespace sportCarnival
         private void Form1_Load(object sender, EventArgs e)
         {
             //test, later delete
-            FormSki.Show();
+            //FormSki.Show();
         }
 
         private void ski_btn_Click(object sender, EventArgs e)
