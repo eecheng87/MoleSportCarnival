@@ -24,9 +24,11 @@ namespace sportCarnival
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //test, later delete
-            //FormSki.Show();
-            //FormFish.Show();
+            BackgroundImage = new Bitmap(@"../../../Resource/startImg.jpg");
+            BackgroundImageLayout = ImageLayout.Zoom;
+            button5.Text = "離開";
+            button5.BackColor = Color.Red;
+
         }
 
         private void ski_btn_Click(object sender, EventArgs e)
@@ -49,6 +51,11 @@ namespace sportCarnival
         private void hockey_btn_Click(object sender, EventArgs e)
         {
             FormHockey.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

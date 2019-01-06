@@ -203,10 +203,14 @@ namespace sportCarnival
             // check whether finish current Question
             if (complete())
             {
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                // ~~~~~~~later to do~~~~~~~~~~~~~ 
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                MessageBox.Show("FD");
+                timer1.Stop();
+                DialogResult tmp = MessageBox.Show("你完成了, 按確認回到首頁");
+
+                if (tmp == DialogResult.OK)
+                {
+                    this.Close();
+                }
+               
             }
 
         }
@@ -248,7 +252,7 @@ namespace sportCarnival
         {
             Random myrand = new Random();
             //Graphics g;
-            int num = myrand.Next(65, 70);
+            int num = myrand.Next(65, 73);
             char ch = (char)num;
             
             
@@ -271,11 +275,11 @@ namespace sportCarnival
         private void initQuestion()
         {
             question = new List<string>();
-            //question.Add("practice");
-            //question.Add("hello");
-            //question.Add("good");
-            question.Add("ABC");
-            //question.Add("morning");
+            question.Add("GAB");
+            question.Add("DAD");
+            question.Add("CAD");
+            question.Add("BAD");
+            question.Add("ADC");
         }
     }
 
